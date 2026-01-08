@@ -75,7 +75,7 @@ export const calls: Call[] = [
       "Caller requested to speak with a specialist about custom pricing. Needs callback today.",
     requiresHandoff: true,
     sentiment: "Neutral",
-    recordingUrl: "#",
+    recordingUrl: "https://dxc03zgurdly9.cloudfront.net/b85b6fb160d5172d39f7af65c4be1ce5f175ae104fc95e664ac9ec08244002ff/recording.wav",
     callCost: 0.15,
     transcript: [
       {

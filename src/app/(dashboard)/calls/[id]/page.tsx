@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState } from "react";
+import { useState, use } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,48 +24,66 @@ const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destruc
     incomplete: "destructive",
   };
 
-export default async function CallDetailPage({
+export default function CallDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
+  const { id } = use(params);
+  const [copied, setCopied] = useState(false);
+
   const call = calls.find((item) => item.id === id);
 
   if (!call) {
     notFound();
   }
 
+  const handleDownloadRecording = () => {
+    if (call.recordingUrl && call.recordingUrl !== "#") {
+      window.open(call.recordingUrl, "_blank");
+    }
+  };
+
+  const handleCopyCallId = async () => {
+    await navigator.clipboard.writeText(call.id);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
+  };
+
   return (
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+        <div className="flex-1">
           <Link href="/conversations" className="text-xs text-primary hover:underline">
             ← Back to calls
           </Link>
-          <h1 className="mt-1 text-xl font-semibold tracking-tight">{call.customerName}</h1>
-          <p className="text-sm text-muted-foreground">
-            {formatDateTime(call.datetime)} · {call.durationMinutes}m · {call.agentName}
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {call.tags.map((tag) => (
-              <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>
-                {tag}
-              </Badge>
-            ))}
-            {call.requiresHandoff ? (
-              <Badge variant="warning">Needs callback</Badge>
-            ) : null}
+          <div className="mt-2 flex items-center gap-3 flex-wrap">
+            <h1 className="text-xl font-semibold tracking-tight">{call.customerName}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              {call.tags.map((tag) => (
+                <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>
+                  {tag}
+                </Badge>
+              ))}
+              {call.requiresHandoff ? (
+                <Badge variant="warning">Needs callback</Badge>
+              ) : null}
+            </div>
           </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {formatDateTime(call.datetime)}
+          </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-2">
-            <i className="lni lni-headphone-alt" aria-hidden />
-            Play recording
-          </Button>
-          <Button size="sm" className="gap-2">
-            <i className="lni lni-share" aria-hidden />
-            Share
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={handleDownloadRecording}
+            disabled={!call.recordingUrl || call.recordingUrl === "#"}
+          >
+            <i className="lni lni-download" aria-hidden />
+            Download recording
           </Button>
         </div>
       </div>
@@ -85,15 +103,28 @@ export default async function CallDetailPage({
             <CardTitle className="text-base font-semibold">Transcript</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {call.transcript.map((line, idx) => (
-              <div
-                key={`${line.speaker}-${idx}`}
-                className="rounded-lg border border-border/70 bg-muted/40 px-3 py-3"
-              >
-                <p className="text-xs font-semibold text-muted-foreground">{line.speaker}</p>
-                <p className="text-sm text-foreground">{line.text}</p>
-              </div>
-            ))}
+            {call.transcript.map((line, idx) => {
+              const isAgent = line.speaker === "Agent";
+              return (
+                <div
+                  key={`${line.speaker}-${idx}`}
+                  className={`flex ${isAgent ? "justify-start" : "justify-end"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-lg px-4 py-2.5 ${
+                      isAgent
+                        ? "bg-muted/60 text-foreground"
+                        : "bg-primary/10 text-foreground"
+                    }`}
+                  >
+                    <p className="text-xs font-semibold text-muted-foreground mb-1">
+                      {line.speaker}
+                    </p>
+                    <p className="text-sm">{line.text}</p>
+                  </div>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
 
@@ -104,7 +135,14 @@ export default async function CallDetailPage({
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
               <span>Call ID</span>
-              <span className="font-semibold text-foreground">{call.id}</span>
+              <button
+                onClick={handleCopyCallId}
+                className="font-semibold text-foreground hover:text-primary transition-colors cursor-pointer flex items-center gap-1.5"
+                title="Click to copy Call ID"
+              >
+                <span>{call.id}</span>
+                <i className={`lni ${copied ? "lni-checkmark text-green-600" : "lni-files"} text-sm`} aria-hidden />
+              </button>
             </div>
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
               <span>Duration</span>
@@ -121,15 +159,9 @@ export default async function CallDetailPage({
               </div>
             )}
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
-              <span>Call cost</span>
-              <span className="font-semibold text-foreground">
-                {call.callCost ? `$${call.callCost.toFixed(2)}` : "Pending"}
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
               <span>Recording</span>
               <span className="font-semibold text-foreground">
-                {call.recordingUrl ? "Available" : "Pending"}
+                {call.recordingUrl && call.recordingUrl !== "#" ? "Available" : "Pending"}
               </span>
             </div>
             {call.requiresHandoff ? (
