@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "../theme-toggle";
 
 type NavItem = {
   label: string;
@@ -29,13 +28,13 @@ export function Sidebar({ open, onClose, navItems }: SidebarProps) {
           "lg:translate-x-0"
         )}
       >
-        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5 shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
             <i className="lni lni-mic text-xl" aria-hidden />
           </div>
-          <div>
-            <p className="text-sm font-semibold leading-tight">Voice AI</p>
-            <p className="text-xs text-muted-foreground">Agent Dashboard</p>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold leading-tight truncate">Voice AI</p>
+            <p className="text-xs text-muted-foreground truncate">Agent Dashboard</p>
           </div>
         </div>
 
@@ -64,14 +63,7 @@ export function Sidebar({ open, onClose, navItems }: SidebarProps) {
           })}
         </nav>
 
-        <div className="mt-auto border-t border-sidebar-border px-4 py-4 space-y-3">
-          <div className="flex items-center justify-between rounded-lg bg-sidebar-accent/40 px-3 py-2">
-            <div className="flex items-center gap-2">
-              <i className="lni lni-night text-base" aria-hidden />
-              <span className="text-sm font-medium">Theme</span>
-            </div>
-            <ThemeToggle />
-          </div>
+        <div className="mt-auto border-t border-sidebar-border px-4 py-4">
           <div className="rounded-lg border border-sidebar-border bg-sidebar px-3 py-3">
             <p className="text-sm font-semibold">Need help?</p>
             <p className="mt-1 text-xs text-muted-foreground">

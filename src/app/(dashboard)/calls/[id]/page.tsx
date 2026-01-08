@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,7 +15,16 @@ import {
 import { calls } from "@/lib/mock-data";
 import { formatDateTime } from "@/lib/utils";
 
-export default async function ConversationDetailPage({
+const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
+  {
+    appointment: "success",
+    completed: "neutral",
+    general: "neutral",
+    handoff: "warning",
+    incomplete: "destructive",
+  };
+
+export default async function CallDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -29,7 +41,7 @@ export default async function ConversationDetailPage({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <Link href="/conversations" className="text-xs text-primary hover:underline">
-            ← Back to conversations
+            ← Back to calls
           </Link>
           <h1 className="mt-1 text-xl font-semibold tracking-tight">{call.customerName}</h1>
           <p className="text-sm text-muted-foreground">
@@ -37,7 +49,9 @@ export default async function ConversationDetailPage({
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {call.tags.map((tag) => (
-              <Badge key={tag}>{tag}</Badge>
+              <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>
+                {tag}
+              </Badge>
             ))}
             {call.requiresHandoff ? (
               <Badge variant="warning">Needs callback</Badge>
@@ -55,6 +69,15 @@ export default async function ConversationDetailPage({
           </Button>
         </div>
       </div>
+
+      <Card>
+        <CardHeader className="pb-4">
+          <CardTitle className="text-base font-semibold">Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm leading-relaxed text-muted-foreground">{call.summary}</p>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
@@ -76,13 +99,27 @@ export default async function ConversationDetailPage({
 
         <Card>
           <CardHeader className="pb-4">
-            <CardTitle className="text-base font-semibold">Details</CardTitle>
+            <CardTitle className="text-base font-semibold">Call Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
-              <span>Sentiment</span>
-              <span className="font-semibold text-foreground">{call.sentiment ?? "N/A"}</span>
+              <span>Call ID</span>
+              <span className="font-semibold text-foreground">{call.id}</span>
             </div>
+            <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
+              <span>Duration</span>
+              <span className="font-semibold text-foreground">{call.durationMinutes} minutes</span>
+            </div>
+            <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
+              <span>Agent</span>
+              <span className="font-semibold text-foreground">{call.agentName}</span>
+            </div>
+            {call.sentiment && (
+              <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
+                <span>Sentiment</span>
+                <span className="font-semibold text-foreground">{call.sentiment}</span>
+              </div>
+            )}
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
               <span>Call cost</span>
               <span className="font-semibold text-foreground">

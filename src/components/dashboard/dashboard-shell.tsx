@@ -39,8 +39,8 @@ export function DashboardShell({ children, userEmail }: DashboardShellProps) {
           navItems={navItems}
           userEmail={userEmail}
         />
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10">
-          <div className="mx-auto max-w-7xl">{children}</div>
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-[95rem]">{children}</div>
         </main>
       </div>
     </div>

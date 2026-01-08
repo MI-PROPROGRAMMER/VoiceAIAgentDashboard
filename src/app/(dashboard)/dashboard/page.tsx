@@ -29,7 +29,7 @@ export default function DashboardPage() {
   const conversionTrend = [22, 28, 26, 32, 35, 36, 38, 40];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       <div className="space-y-0.5">
         <p className="text-xs font-medium text-muted-foreground">Welcome back</p>
         <h1 className="text-xl font-semibold tracking-tight">
@@ -37,39 +37,39 @@ export default function DashboardPage() {
         </h1>
       </div>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Appointments"
           value={stats.totalAppointments.toString()}
           helper="Booked through the AI agent"
-          icon="lni lni-calendar"
+          icon="calendar"
         />
         <StatCard
           title="Conversion rate"
           value={`${stats.conversionRate}%`}
           helper="Call → booking conversion"
-          icon="lni lni-pulse"
+          icon="pulse"
         />
         <StatCard
           title="Total calls"
           value={stats.totalCalls.toString()}
           helper="Last 30 days"
-          icon="lni lni-headphone-alt"
+          icon="headphone"
         />
         <StatCard
           title="Handoffs"
           value={stats.handoffs.toString()}
           helper="Needing callbacks"
-          icon="lni lni-flag-alt"
+          icon="flag"
           accent="warning"
         />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-3">
+      <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <div className="space-y-1">
-              <CardTitle className="text-base font-semibold">Recent calls</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <div className="space-y-1.5">
+              <CardTitle className="text-lg font-bold">Recent calls</CardTitle>
               <p className="text-sm text-muted-foreground">
                 Summaries, tags, and quick handoff visibility.
               </p>
@@ -78,27 +78,27 @@ export default function DashboardPage() {
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-3 max-h-80 overflow-y-auto pr-2">
+          <CardContent className="space-y-4 max-h-80 overflow-y-auto pr-2">
             {recentCalls.map((call) => (
-              <CallCard key={call.id} call={call} href={`/conversations/${call.id}`} />
+              <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
             ))}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold">Today&apos;s schedules</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-lg font-bold">Today&apos;s schedules</CardTitle>
             <Link href="/appointments" className="text-sm text-primary hover:underline">
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-2 max-h-80 overflow-y-auto pr-1">
+          <CardContent className="space-y-3 max-h-80 overflow-y-auto pr-1">
             {schedules.map((item) => (
               <div
                 key={item.title}
-                className="flex items-start gap-3 rounded-lg bg-muted/40 px-3 py-3"
+                className="flex items-start gap-4 rounded-lg bg-muted/40 px-4 py-4"
               >
-                <span className="rounded-md bg-background px-2 py-1 text-xs font-semibold text-primary">
+                <span className="rounded-md bg-background px-3 py-1.5 text-xs font-semibold text-primary">
                   {item.time}
                 </span>
                 <div className="space-y-1">
@@ -111,21 +111,21 @@ export default function DashboardPage() {
         </Card>
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-3">
+      <section className="grid gap-6 lg:grid-cols-3">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold">Recent bookings</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-lg font-bold">Recent bookings</CardTitle>
             <Link href="/appointments" className="text-sm text-primary hover:underline">
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-2 max-h-80 overflow-y-auto pr-1">
+          <CardContent className="space-y-3 max-h-80 overflow-y-auto pr-1">
             {recentBookings.map((booking) => (
               <div
                 key={booking.id}
-                className="flex items-center justify-between rounded-lg bg-card/70 px-3 py-3 shadow-sm"
+                className="flex items-center justify-between rounded-lg bg-card/70 px-4 py-4 shadow-sm"
               >
-                <div className="space-y-0.5">
+                <div className="space-y-1">
                   <p className="text-sm font-semibold">{booking.customer}</p>
                   <p className="text-xs text-muted-foreground">
                     {booking.service} · {booking.date} · {booking.time}
@@ -138,31 +138,31 @@ export default function DashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold">Handoffs</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-lg font-bold">Handoffs</CardTitle>
             <Link href="/need-attention" className="text-sm text-primary hover:underline">
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-3 max-h-80 overflow-y-auto pr-1">
+          <CardContent className="space-y-4 max-h-80 overflow-y-auto pr-2">
             {handoffCalls.map((call) => (
               <div
                 key={call.id}
-                className="rounded-lg border border-dashed border-amber-200 bg-amber-50 px-3 py-3 dark:border-amber-900/50 dark:bg-amber-950/30"
+                className="rounded-lg border border-dashed border-amber-200 bg-amber-50 px-5 py-5 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-3"
               >
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold">{call.customerName}</p>
                   <Badge variant="warning">Needs callback</Badge>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   {call.summary}
                 </p>
                 <Link
-                  href={`/conversations/${call.id}`}
-                  className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-amber-700 hover:underline dark:text-amber-400"
+                  href={`/calls/${call.id}`}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 hover:underline dark:text-amber-400"
                 >
                   Open call
-                  <i className="lni lni-chevron-right text-[11px]" aria-hidden />
+                  <i className="lni lni-chevron-right text-xs" aria-hidden />
                 </Link>
               </div>
             ))}
@@ -170,18 +170,18 @@ export default function DashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-base font-semibold">Appointments</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+            <CardTitle className="text-lg font-bold">Appointments</CardTitle>
             <Link href="/appointments" className="text-sm text-primary hover:underline">
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-3 max-h-80 overflow-y-auto pr-1">
+          <CardContent className="space-y-4 max-h-80 overflow-y-auto pr-1">
             {upcomingAppointments.map((apt) => (
               <AppointmentCard
                 key={apt.id}
                 appointment={apt}
-                href={`/conversations/${apt.callId}`}
+                href={`/calls/${apt.callId}`}
               />
             ))}
           </CardContent>
@@ -189,9 +189,9 @@ export default function DashboardPage() {
       </section>
 
       <Card className="overflow-hidden">
-        <CardHeader className="flex flex-col gap-3 space-y-0 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-1">
-            <CardTitle className="text-base font-semibold">
+        <CardHeader className="flex flex-col gap-4 space-y-0 md:flex-row md:items-center md:justify-between pb-4">
+          <div className="space-y-1.5">
+            <CardTitle className="text-lg font-bold">
               Call-to-booking conversion
             </CardTitle>
             <p className="text-sm text-muted-foreground">
@@ -203,7 +203,7 @@ export default function DashboardPage() {
             View report
           </Button>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-6">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
             <div>
               <p className="text-sm text-muted-foreground">This week</p>
@@ -218,21 +218,21 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="grid gap-3 md:grid-cols-3">
-            <div className="rounded-lg border border-border/70 bg-muted/40 p-3">
-              <p className="text-sm font-semibold">Booking-ready calls</p>
-              <p className="text-xs text-muted-foreground">
+            <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
+              <p className="text-sm font-semibold mb-2">Booking-ready calls</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 54 calls contained booking intent; 18 converted.
               </p>
             </div>
-            <div className="rounded-lg border border-border/70 bg-muted/40 p-3">
-              <p className="text-sm font-semibold">Callbacks required</p>
-              <p className="text-xs text-muted-foreground">
+            <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
+              <p className="text-sm font-semibold mb-2">Callbacks required</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 {stats.handoffs} calls need human follow-up to close.
               </p>
             </div>
-            <div className="rounded-lg border border-border/70 bg-muted/40 p-3">
-              <p className="text-sm font-semibold">Avg. handling time</p>
-              <p className="text-xs text-muted-foreground">9m 30s per call</p>
+            <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
+              <p className="text-sm font-semibold mb-2">Avg. handling time</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">9m 30s per call</p>
             </div>
           </div>
         </CardContent>

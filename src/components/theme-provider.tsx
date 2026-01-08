@@ -12,17 +12,36 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 const STORAGE_KEY = "dashboard-theme";
 
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+  
+  const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
+  if (stored) return stored;
+  
+  const prefersDark =
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return prefersDark ? "dark" : "light";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "light";
+    const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (stored) return stored;
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    return prefersDark ? "dark" : "light";
+  });
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY) as Theme | null;
-    const prefersDark =
-      stored === null &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial = stored ?? (prefersDark ? "dark" : "light");
-    applyTheme(initial);
+    setMounted(true);
+    const initial = theme;
+    const root = document.documentElement;
+    if (initial === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
   }, []);
 
   const applyTheme = (next: Theme) => {
@@ -33,13 +52,23 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       root.classList.remove("dark");
     }
-    window.localStorage.setItem(STORAGE_KEY, next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(STORAGE_KEY, next);
+    }
   };
 
   const toggleTheme = () => {
     setThemeState((prev) => {
       const next = prev === "light" ? "dark" : "light";
-      applyTheme(next);
+      const root = document.documentElement;
+      if (next === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(STORAGE_KEY, next);
+      }
       return next;
     });
   };

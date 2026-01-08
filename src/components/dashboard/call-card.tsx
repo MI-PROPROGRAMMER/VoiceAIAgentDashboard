@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Call } from "@/lib/mock-data";
 import { cn, formatDateTime } from "@/lib/utils";
@@ -31,11 +30,11 @@ export function CallCard({ call, href, compact }: CallCardProps) {
         compact ? "border-dashed" : "border"
       )}
     >
-      <CardContent className="space-y-3 p-5">
-        <div className="flex flex-wrap items-start gap-3">
-          <div className="flex flex-1 flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <p className="text-sm font-semibold text-foreground">
+      <CardContent className="p-6 flex flex-col">
+        <div className="flex items-start justify-between gap-6">
+          <div className="flex-1 space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-base font-semibold text-foreground">
                 {call.customerName}
               </p>
               <Badge variant="neutral">{call.agentName}</Badge>
@@ -44,36 +43,36 @@ export function CallCard({ call, href, compact }: CallCardProps) {
                   {tag}
                 </Badge>
               ))}
+              {call.requiresHandoff ? (
+                <Badge variant="warning">Needs callback</Badge>
+              ) : null}
             </div>
-            <p className="text-xs text-muted-foreground">
-              {formatDateTime(call.datetime)} · {call.durationMinutes}m
-            </p>
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
               {call.summary}
             </p>
+            {call.sentiment ? (
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5 text-xs text-muted-foreground">
+                <i className="lni lni-smile text-sm" aria-hidden />
+                {call.sentiment}
+              </span>
+            ) : null}
           </div>
-          {call.requiresHandoff ? (
-            <Badge variant="warning">Needs callback</Badge>
-          ) : null}
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-          {call.sentiment ? (
-            <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1">
-              <i className="lni lni-smile text-[15px]" aria-hidden />
-              {call.sentiment}
-            </span>
-          ) : null}
-          {call.callCost ? <span>Cost: ${call.callCost.toFixed(2)}</span> : null}
-        </div>
-
-        {href ? (
-          <div className="flex items-center justify-end">
-            <span className="text-sm font-medium text-primary group-hover:underline">
-              View details
-            </span>
+          <div className="flex flex-col items-end gap-2 text-right shrink-0">
+            <p className="text-xs text-muted-foreground whitespace-nowrap">
+              {formatDateTime(call.datetime)}
+            </p>
+            <p className="text-sm font-medium text-foreground">
+              {call.durationMinutes}m
+            </p>
+            {href ? (
+              <div className="flex justify-start mt-8 pt-0">
+                <span className="text-sm font-medium text-primary group-hover:underline">
+                  View →
+                </span>
+              </div>
+            ) : null}
           </div>
-        ) : null}
+        </div>
       </CardContent>
     </Card>
   );

@@ -25,7 +25,7 @@ export default function NeedAttentionPage() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       <div className="space-y-0.5">
         <p className="text-xs font-medium text-muted-foreground">Need attention</p>
         <h1 className="text-xl font-semibold tracking-tight">
@@ -54,9 +54,9 @@ export default function NeedAttentionPage() {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {handoffs.map((call) => (
-          <CallCard key={call.id} call={call} href={`/conversations/${call.id}`} />
+          <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
         ))}
         {handoffs.length === 0 && (
           <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">

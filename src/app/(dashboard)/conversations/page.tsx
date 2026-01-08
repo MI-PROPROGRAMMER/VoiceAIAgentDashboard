@@ -26,7 +26,7 @@ export default function ConversationsPage() {
   }, [query, tag]);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="space-y-0.5">
           <p className="text-xs font-medium text-muted-foreground">Conversations</p>
@@ -72,9 +72,9 @@ export default function ConversationsPage() {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filtered.map((call) => (
-          <CallCard key={call.id} call={call} href={`/conversations/${call.id}`} />
+          <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
         ))}
         {filtered.length === 0 && (
           <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">

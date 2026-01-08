@@ -1,3 +1,5 @@
+import { Calendar, TrendingUp, Phone, Flag } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -5,15 +7,22 @@ type StatCardProps = {
   title: string;
   value: string;
   helper?: string;
-  icon?: string;
+  icon?: "calendar" | "pulse" | "headphone" | "flag";
   accent?: "primary" | "muted" | "warning";
+};
+
+const iconMap = {
+  calendar: Calendar,
+  pulse: TrendingUp,
+  headphone: Phone,
+  flag: Flag,
 };
 
 export function StatCard({
   title,
   value,
   helper,
-  icon = "lni lni-bar-chart",
+  icon = "pulse",
   accent = "primary",
 }: StatCardProps) {
   const accentClass =
@@ -23,20 +32,22 @@ export function StatCard({
         ? "text-muted-foreground bg-muted"
         : "text-primary bg-primary/10";
 
+  const IconComponent = iconMap[icon] || TrendingUp;
+
   return (
     <Card className="h-full border-border/80">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
-        <span className={cn("flex h-9 w-9 items-center justify-center rounded-lg", accentClass)}>
-          <i className={cn(icon, "text-base")} aria-hidden />
+        <span className={cn("flex h-10 w-10 items-center justify-center rounded-lg", accentClass)}>
+          <IconComponent className="h-5 w-5" />
         </span>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-6">
         <div className="text-3xl font-semibold">{value}</div>
         {helper ? (
-          <p className="mt-2 text-sm text-muted-foreground">{helper}</p>
+          <p className="mt-3 text-sm text-muted-foreground">{helper}</p>
         ) : null}
       </CardContent>
     </Card>

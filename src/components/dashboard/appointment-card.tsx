@@ -21,35 +21,35 @@ const statusVariant: Record<Appointment["status"], "success" | "warning" | "neut
 export function AppointmentCard({ appointment, href }: AppointmentCardProps) {
   const content = (
     <Card className="transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-      <CardContent className="flex flex-col gap-2 p-5">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <p className="text-sm font-semibold">{appointment.customerName}</p>
-            <p className="text-xs text-muted-foreground">{appointment.phone}</p>
+      <CardContent className="flex flex-col gap-4 p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1">
+            <p className="text-base font-semibold">{appointment.customerName}</p>
+            <p className="text-sm text-muted-foreground">{appointment.phone}</p>
           </div>
           <Badge variant={statusVariant[appointment.status]}>
             {appointment.status}
           </Badge>
         </div>
         <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-          <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5">
             <i className="lni lni-calendar" aria-hidden />
             {appointment.date}
           </span>
-          <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5">
             <i className="lni lni-timer" aria-hidden />
             {appointment.time}
           </span>
-          <span className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-1">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-3 py-1.5">
             <i className="lni lni-briefcase" aria-hidden />
             {appointment.service}
           </span>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-2">
+        <p className="text-sm leading-relaxed text-muted-foreground line-clamp-2">
           {appointment.summary}
         </p>
         {href ? (
-          <div className="flex justify-end">
+          <div className="flex justify-end pt-1">
             <span className="text-sm font-medium text-primary hover:underline">
               View call
             </span>

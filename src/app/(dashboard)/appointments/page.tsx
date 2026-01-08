@@ -27,7 +27,7 @@ export default function AppointmentsPage() {
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       <div className="space-y-0.5">
         <p className="text-xs font-medium text-muted-foreground">Appointments</p>
         <h1 className="text-xl font-semibold tracking-tight">
@@ -56,12 +56,12 @@ export default function AppointmentsPage() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((appointment) => (
           <AppointmentCard
             key={appointment.id}
             appointment={appointment}
-            href={`/conversations/${appointment.callId}`}
+            href={`/calls/${appointment.callId}`}
           />
         ))}
         {filtered.length === 0 && (
