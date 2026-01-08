@@ -228,10 +228,10 @@ export default async function SettingsPage() {
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-dashed border-border/70 bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
-            <i className="lni lni-protection text-lg text-primary" aria-hidden />
+            <i className="lni lni-protection text-lg text-blue" aria-hidden />
             Add escalation rules for urgent billing or sentiment drops.
           </div>
-          <Link href="/need-attention" className="text-primary hover:underline">
+          <Link href="/need-attention" className="text-blue hover:underline">
             Review handoffs →
           </Link>
         </CardContent>

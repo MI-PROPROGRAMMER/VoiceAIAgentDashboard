@@ -28,7 +28,7 @@ export default async function ConversationDetailPage({
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <Link href="/conversations" className="text-xs text-primary hover:underline">
+          <Link href="/conversations" className="text-xs text-blue hover:underline">
             ← Back to conversations
           </Link>
           <h1 className="mt-1 text-xl font-semibold tracking-tight">{call.customerName}</h1>

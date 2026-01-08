@@ -74,7 +74,7 @@ export default function DashboardPage() {
                 Summaries, tags, and quick handoff visibility.
               </p>
             </div>
-            <Link href="/conversations" className="text-sm text-primary hover:underline">
+            <Link href="/conversations" className="text-sm text-blue hover:underline">
               View all
             </Link>
           </CardHeader>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-lg font-bold">Today&apos;s schedules</CardTitle>
-            <Link href="/appointments" className="text-sm text-primary hover:underline">
+            <Link href="/appointments" className="text-sm text-blue hover:underline">
               View all
             </Link>
           </CardHeader>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
                 key={item.title}
                 className="flex items-start gap-4 rounded-lg bg-muted/40 px-4 py-4"
               >
-                <span className="rounded-md bg-background px-3 py-1.5 text-xs font-semibold text-primary">
+                <span className="rounded-md bg-blue/10 px-3 py-1.5 text-xs font-semibold text-blue">
                   {item.time}
                 </span>
                 <div className="space-y-1">
@@ -115,7 +115,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-lg font-bold">Recent bookings</CardTitle>
-            <Link href="/appointments" className="text-sm text-primary hover:underline">
+            <Link href="/appointments" className="text-sm text-blue hover:underline">
               View all
             </Link>
           </CardHeader>
@@ -123,9 +123,9 @@ export default function DashboardPage() {
             {recentBookings.map((booking) => (
               <div
                 key={booking.id}
-                className="flex items-center justify-between rounded-lg bg-card/70 px-4 py-4 shadow-sm"
+                className="flex items-center justify-between rounded-lg bg-card/70 px-4 py-2.5 shadow-sm"
               >
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <p className="text-sm font-semibold">{booking.customer}</p>
                   <p className="text-xs text-muted-foreground">
                     {booking.service} · {booking.date} · {booking.time}
@@ -140,26 +140,26 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-lg font-bold">Handoffs</CardTitle>
-            <Link href="/need-attention" className="text-sm text-primary hover:underline">
+            <Link href="/need-attention" className="text-sm text-blue hover:underline">
               View all
             </Link>
           </CardHeader>
-          <CardContent className="space-y-4 max-h-80 overflow-y-auto pr-2">
+          <CardContent className="space-y-2.5 max-h-80 overflow-y-auto pr-2">
             {handoffCalls.map((call) => (
               <div
                 key={call.id}
-                className="rounded-lg border border-dashed border-amber-200 bg-amber-50 px-5 py-5 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-3"
+                className="rounded-lg border border-dashed border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-1.5"
               >
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold">{call.customerName}</p>
-                  <Badge variant="warning">Needs callback</Badge>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs font-semibold line-clamp-1">{call.customerName}</p>
+                  <Badge variant="warning" className="text-xs">Needs callback</Badge>
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">
+                <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
                   {call.summary}
                 </p>
                 <Link
                   href={`/calls/${call.id}`}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 hover:underline dark:text-amber-400"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-700 hover:underline dark:text-amber-400"
                 >
                   Open call
                   <i className="lni lni-chevron-right text-xs" aria-hidden />
@@ -172,7 +172,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
             <CardTitle className="text-lg font-bold">Appointments</CardTitle>
-            <Link href="/appointments" className="text-sm text-primary hover:underline">
+            <Link href="/appointments" className="text-sm text-blue hover:underline">
               View all
             </Link>
           </CardHeader>

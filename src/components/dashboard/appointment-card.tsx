@@ -50,7 +50,7 @@ export function AppointmentCard({ appointment, href }: AppointmentCardProps) {
         </p>
         {href ? (
           <div className="flex justify-end pt-1">
-            <span className="text-sm font-medium text-primary hover:underline">
+            <span className="text-sm font-medium text-blue hover:underline">
               View call
             </span>
           </div>

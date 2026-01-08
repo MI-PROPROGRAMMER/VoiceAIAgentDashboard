@@ -34,7 +34,7 @@ export default function PricingPage() {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <i className="lni lni-checkmark-circle text-primary" aria-hidden />
+                    <i className="lni lni-checkmark-circle text-blue" aria-hidden />
                     <span>{feature}</span>
                   </li>
                 ))}

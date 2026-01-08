@@ -54,7 +54,7 @@ export default function CallDetailPage({
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex-1">
-          <Link href="/conversations" className="text-xs text-primary hover:underline">
+          <Link href="/conversations" className="text-xs text-blue hover:underline">
             ← Back to calls
           </Link>
           <div className="mt-2 flex items-center gap-3 flex-wrap">
@@ -114,7 +114,7 @@ export default function CallDetailPage({
                     className={`max-w-[80%] rounded-lg px-4 py-2.5 ${
                       isAgent
                         ? "bg-muted/60 text-foreground"
-                        : "bg-primary/10 text-foreground"
+                        : "bg-blue/10 text-foreground"
                     }`}
                   >
                     <p className="text-xs font-semibold text-muted-foreground mb-1">
@@ -137,7 +137,7 @@ export default function CallDetailPage({
               <span>Call ID</span>
               <button
                 onClick={handleCopyCallId}
-                className="font-semibold text-foreground hover:text-primary transition-colors cursor-pointer flex items-center gap-1.5"
+                className="font-semibold text-foreground hover:text-blue transition-colors cursor-pointer flex items-center gap-1.5"
                 title="Click to copy Call ID"
               >
                 <span>{call.id}</span>

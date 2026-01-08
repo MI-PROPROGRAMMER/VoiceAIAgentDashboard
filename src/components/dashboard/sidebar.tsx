@@ -29,7 +29,7 @@ export function Sidebar({ open, onClose, navItems }: SidebarProps) {
         )}
       >
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-5 shrink-0">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue/10 text-blue shrink-0">
             <i className="lni lni-mic text-xl" aria-hidden />
           </div>
           <div className="min-w-0">
@@ -52,7 +52,7 @@ export function Sidebar({ open, onClose, navItems }: SidebarProps) {
                 className={cn(
                   "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-sidebar-primary/10 text-sidebar-primary"
+                    ? "bg-blue/10 text-blue"
                     : "text-sidebar-foreground hover:bg-sidebar-accent/60"
                 )}
               >
@@ -71,7 +71,7 @@ export function Sidebar({ open, onClose, navItems }: SidebarProps) {
             </p>
             <Link
               href="#"
-              className="mt-2 inline-flex items-center gap-2 text-xs font-medium text-primary hover:underline"
+              className="mt-2 inline-flex items-center gap-2 text-xs font-medium text-blue hover:underline"
             >
               <i className="lni lni-life-ring text-sm" aria-hidden />
               Open support

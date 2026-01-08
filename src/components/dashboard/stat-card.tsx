@@ -30,7 +30,7 @@ export function StatCard({
       ? "text-amber-700 bg-amber-500/15"
       : accent === "muted"
         ? "text-muted-foreground bg-muted"
-        : "text-primary bg-primary/10";
+        : "text-blue bg-blue/10";
 
   const IconComponent = iconMap[icon] || TrendingUp;
 

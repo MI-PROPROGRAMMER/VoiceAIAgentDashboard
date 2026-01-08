@@ -64,13 +64,6 @@ export function CallCard({ call, href, compact }: CallCardProps) {
             <p className="text-sm font-medium text-foreground">
               {call.durationMinutes}m
             </p>
-            {href ? (
-              <div className="flex justify-start mt-8 pt-0">
-                <span className="text-sm font-medium text-primary group-hover:underline">
-                  View →
-                </span>
-              </div>
-            ) : null}
           </div>
         </div>
       </CardContent>

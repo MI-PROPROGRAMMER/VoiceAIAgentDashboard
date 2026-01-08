@@ -55,7 +55,7 @@ export function Topbar({ onToggleSidebar, navItems, userEmail }: TopbarProps) {
               <i className="lni lni-alarm text-lg" aria-hidden />
             </Button>
             <div className="hidden items-center gap-2 rounded-full border border-border bg-muted/50 px-3 py-1.5 sm:flex shrink-0">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary shrink-0">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue/10 text-blue shrink-0">
                 <i className="lni lni-user text-sm" aria-hidden />
               </div>
               <div className="flex flex-col min-w-0">
