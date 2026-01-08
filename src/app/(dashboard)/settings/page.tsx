@@ -1,5 +1,4 @@
 import { revalidatePath } from "next/cache";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { BusinessProfileForm } from "@/components/dashboard/business-profile-form";
@@ -219,23 +218,6 @@ export default async function SettingsPage() {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base font-semibold">Routing</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Configure when to hand off to humans and where to send data.
-          </p>
-        </CardHeader>
-        <CardContent className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-dashed border-border/70 bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <i className="lni lni-protection text-lg text-blue" aria-hidden />
-            Add escalation rules for urgent billing or sentiment drops.
-          </div>
-          <Link href="/need-attention" className="text-blue hover:underline">
-            Review handoffs →
-          </Link>
-        </CardContent>
-      </Card>
     </div>
   );
 }
