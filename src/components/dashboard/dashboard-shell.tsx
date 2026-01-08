@@ -15,7 +15,7 @@ const NAV_ITEMS = [
   { label: "Conversations", href: "/conversations", icon: "lni lni-phone" },
   { label: "Need Attention", href: "/need-attention", icon: "lni lni-flag" },
   { label: "Appointments", href: "/appointments", icon: "lni lni-calendar" },
-  { label: "Link in Bio", href: "/link-in-bio", icon: "lni lni-link" },
+  { label: "Customer View Page", href: "/link-in-bio", icon: "lni lni-link" },
   { label: "Pricing", href: "/pricing", icon: "lni lni-offer" },
   { label: "Settings", href: "/settings", icon: "lni lni-cog" },
 ];

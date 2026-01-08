@@ -43,6 +43,7 @@ export default function DashboardPage() {
           value={stats.totalAppointments.toString()}
           helper="Booked through the AI agent"
           icon="calendar"
+          href="/appointments"
         />
         <StatCard
           title="Conversion rate"
@@ -55,6 +56,7 @@ export default function DashboardPage() {
           value={stats.totalCalls.toString()}
           helper="Last 30 days"
           icon="headphone"
+          href="/conversations"
         />
         <StatCard
           title="Handoffs"
@@ -62,6 +64,7 @@ export default function DashboardPage() {
           helper="Needing callbacks"
           icon="flag"
           accent="warning"
+          href="/need-attention"
         />
       </section>
 
@@ -123,15 +126,15 @@ export default function DashboardPage() {
             {recentBookings.map((booking) => (
               <div
                 key={booking.id}
-                className="flex items-center justify-between rounded-lg bg-card/70 px-4 py-2.5 shadow-sm"
+                className="flex items-center justify-between gap-2 rounded-lg bg-card/70 px-3 py-2 shadow-sm"
               >
-                <div className="space-y-0.5">
-                  <p className="text-sm font-semibold">{booking.customer}</p>
-                  <p className="text-xs text-muted-foreground">
+                <div className="min-w-0 flex-1 space-y-0.5">
+                  <p className="text-sm font-semibold truncate">{booking.customer}</p>
+                  <p className="text-xs text-muted-foreground truncate">
                     {booking.service} · {booking.date} · {booking.time}
                   </p>
                 </div>
-                <Badge variant="neutral">New</Badge>
+                <Badge variant="neutral" className="shrink-0">New</Badge>
               </div>
             ))}
           </CardContent>
@@ -148,11 +151,11 @@ export default function DashboardPage() {
             {handoffCalls.map((call) => (
               <div
                 key={call.id}
-                className="rounded-lg border border-dashed border-amber-200 bg-amber-50 px-3 py-2 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-1.5"
+                className="w-full rounded-lg border border-dashed border-amber-200 bg-amber-50 px-2.5 py-2 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-1.5"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold line-clamp-1">{call.customerName}</p>
-                  <Badge variant="warning" className="text-xs">Needs callback</Badge>
+                <div className="flex items-center justify-between gap-2 min-w-0">
+                  <p className="text-xs font-semibold line-clamp-1 min-w-0 flex-1">{call.customerName}</p>
+                  <Badge variant="warning" className="text-xs shrink-0">Needs callback</Badge>
                 </div>
                 <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
                   {call.summary}
@@ -198,7 +201,7 @@ export default function DashboardPage() {
               Track how many calls turn into appointments. Tune scripts and routing to improve.
             </p>
           </div>
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="gap-2" disabled>
             <i className="lni lni-stats-up text-base" aria-hidden />
             View report
           </Button>

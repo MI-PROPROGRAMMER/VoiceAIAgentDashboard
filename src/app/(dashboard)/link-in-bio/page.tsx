@@ -20,11 +20,6 @@ export default function LinkInBioPage() {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const inlinePreview = useMemo(
-    () => `${profile.name} · ${profile.phone} · ${profile.address}`,
-    [profile]
-  );
-
   return (
     <div className="space-y-5">
       <div className="space-y-0.5">
@@ -118,46 +113,125 @@ export default function LinkInBioPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="lg:sticky lg:top-4 lg:self-start">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base font-semibold">Preview</CardTitle>
+            <CardTitle className="text-base font-semibold">Live Preview</CardTitle>
+            <p className="text-xs text-muted-foreground">How customers will see your page</p>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="rounded-lg border border-border/70 bg-muted/40 p-3 text-sm text-muted-foreground">
-              {inlinePreview}
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm font-semibold">{profile.name}</p>
-              <p className="text-xs text-muted-foreground">{profile.type}</p>
-              <div className="flex flex-wrap gap-2">
-                {profile.services.map((service) => (
-                  <Badge key={service} variant="neutral">
-                    {service}
-                  </Badge>
-                ))}
+          <CardContent className="p-0">
+            <div className="border-t border-border">
+              <div className="h-[600px] overflow-y-auto bg-background">
+                <div className="min-h-full bg-gradient-to-br from-background via-background to-muted/30">
+                  <div className="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-12 sm:px-8">
+                    {/* Header Section */}
+                    <header className="space-y-4 text-center">
+                      <div className="inline-flex items-center gap-2 rounded-full border border-border/50 bg-muted/50 px-4 py-1.5">
+                        <i className="lni lni-mic text-sm text-blue" aria-hidden />
+                        <p className="text-xs font-medium text-muted-foreground">Powered by Voice AI</p>
+                      </div>
+                      <div className="space-y-2">
+                        <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                          {profile.name}
+                        </h1>
+                        <p className="text-sm text-muted-foreground sm:text-base">{profile.type}</p>
+                      </div>
+                    </header>
+
+                    {/* Main Card */}
+                    <Card className="border-border/70 shadow-lg">
+                      <CardHeader className="space-y-1 pb-6 text-center">
+                        <CardTitle className="text-xl font-semibold sm:text-2xl">Visit or call us</CardTitle>
+                        <p className="text-xs text-muted-foreground sm:text-sm">We're here to help you</p>
+                      </CardHeader>
+                      <CardContent className="space-y-6 px-4 pb-6 sm:px-6 sm:pb-8">
+                        {/* Phone Number - Prominent */}
+                        <div className="flex flex-col items-center gap-3 rounded-xl bg-blue/5 border border-blue/10 p-5">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue/10">
+                            <i className="lni lni-phone text-xl text-blue" aria-hidden />
+                          </div>
+                          <a
+                            href={`tel:${profile.callNumber.replace(/\s/g, "")}`}
+                            className="text-xl font-bold text-blue hover:text-blue/80 transition-colors"
+                          >
+                            {profile.callNumber}
+                          </a>
+                          <Button size="lg" className="mt-2 w-full sm:w-auto gap-2">
+                            <i className="lni lni-phone text-base" aria-hidden />
+                            Call now
+                          </Button>
+                        </div>
+
+                        {/* Address */}
+                        <div className="flex items-start gap-4 rounded-lg border border-border/50 bg-muted/30 p-4">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                            <i className="lni lni-map-marker text-xl text-foreground" aria-hidden />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-xs font-medium text-muted-foreground mb-1">Address</p>
+                            <p className="text-sm leading-relaxed text-foreground">
+                              {profile.address}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Business Hours */}
+                        <div className="flex items-start gap-4 rounded-lg border border-border/50 bg-muted/30 p-4">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
+                            <i className="lni lni-timer text-xl text-foreground" aria-hidden />
+                          </div>
+                          <div className="flex-1">
+                            <p className="text-xs font-medium text-muted-foreground mb-3">Business Hours</p>
+                            <div className="space-y-2">
+                              {profile.hours.map((hour, idx) => (
+                                <p key={idx} className="text-sm leading-relaxed text-foreground">
+                                  {hour}
+                                </p>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Services */}
+                        <div className="rounded-lg border border-border/50 bg-muted/30 p-4">
+                          <p className="mb-3 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                            Our Services
+                          </p>
+                          <div className="flex flex-wrap justify-center gap-2">
+                            {profile.services.map((service) => (
+                              <Badge
+                                key={service}
+                                variant="default"
+                                className="bg-blue/10 text-blue border-blue/20 px-3 py-1.5 text-xs font-medium"
+                              >
+                                <i className="lni lni-checkmark-circle mr-1.5 text-xs" aria-hidden />
+                                {service}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    {/* Footer */}
+                    <div className="text-center">
+                      <p className="text-xs text-muted-foreground">
+                        Need assistance? Our AI assistant is available 24/7 to help you
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p className="flex items-center gap-2">
-                <i className="lni lni-phone" aria-hidden />
-                {profile.callNumber}
-              </p>
-              <p className="flex items-center gap-2">
-                <i className="lni lni-map-marker" aria-hidden />
-                {profile.address}
-              </p>
-              <p className="flex items-center gap-2">
-                <i className="lni lni-timer" aria-hidden />
-                {profile.hours.join(" • ")}
-              </p>
+            <div className="border-t border-border p-4">
+              <Button
+                className="w-full gap-2"
+                variant="outline"
+                onClick={() => window.open("/customer-view", "_blank")}
+              >
+                <i className="lni lni-external-link text-base" aria-hidden />
+                Open in new tab
+              </Button>
             </div>
-            <Button
-              className="w-full gap-2"
-              onClick={() => window.open("/customer-view", "_blank")}
-            >
-              <i className="lni lni-eye" aria-hidden />
-              Open public view
-            </Button>
           </CardContent>
         </Card>
       </div>

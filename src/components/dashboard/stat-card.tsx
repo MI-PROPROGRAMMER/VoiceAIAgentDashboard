@@ -1,3 +1,6 @@
+"use client";
+
+import Link from "next/link";
 import { Calendar, TrendingUp, Phone, Flag } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +12,7 @@ type StatCardProps = {
   helper?: string;
   icon?: "calendar" | "pulse" | "headphone" | "flag";
   accent?: "primary" | "muted" | "warning";
+  href?: string;
 };
 
 const iconMap = {
@@ -24,6 +28,7 @@ export function StatCard({
   helper,
   icon = "pulse",
   accent = "primary",
+  href,
 }: StatCardProps) {
   const accentClass =
     accent === "warning"
@@ -34,8 +39,13 @@ export function StatCard({
 
   const IconComponent = iconMap[icon] || TrendingUp;
 
-  return (
-    <Card className="h-full border-border/80">
+  const cardContent = (
+    <Card
+      className={cn(
+        "h-full border-border/80 transition-all duration-200",
+        href && "cursor-pointer hover:shadow-md hover:border-border hover:-translate-y-0.5"
+      )}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
@@ -52,4 +62,10 @@ export function StatCard({
       </CardContent>
     </Card>
   );
+
+  if (href) {
+    return <Link href={href}>{cardContent}</Link>;
+  }
+
+  return cardContent;
 }

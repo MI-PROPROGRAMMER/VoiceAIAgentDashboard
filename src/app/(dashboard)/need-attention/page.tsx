@@ -1,11 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { CallCard } from "@/components/dashboard/call-card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { calls } from "@/lib/mock-data";
 
@@ -47,10 +45,6 @@ export default function NeedAttentionPage() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Button variant="outline" size="sm" className="gap-2">
-            <i className="lni lni-clipboard" aria-hidden />
-            Assign
-          </Button>
         </div>
       </div>
 
@@ -65,19 +59,6 @@ export default function NeedAttentionPage() {
         )}
       </div>
 
-      <div className="flex flex-col gap-3 rounded-xl border border-dashed border-amber-200 bg-amber-50 px-4 py-4 dark:border-amber-900/50 dark:bg-amber-950/30 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">
-            Improve resolution speed
-          </p>
-          <p className="text-xs text-amber-700 dark:text-amber-400">
-            Route urgent calls directly to a human or schedule callbacks automatically.
-          </p>
-        </div>
-        <Link href="/settings" className="text-sm font-medium text-amber-800 hover:underline dark:text-amber-300">
-          Update routing →
-        </Link>
-      </div>
     </div>
   );
 }
