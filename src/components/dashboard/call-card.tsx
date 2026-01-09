@@ -5,27 +5,15 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Call } from "@/lib/mock-data";
+import { tagVariantMap } from "@/lib/tag-variants";
 import { cn, formatDateTime } from "@/lib/utils";
 
 type CallCardProps = {
   call: Call;
   href?: string;
-  compact?: boolean;
 };
 
-const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
-  {
-    appointment: "success",
-    "call completed": "neutral",
-    general: "neutral",
-    handoff: "warning",
-    "call incomplete": "destructive",
-    confirmed: "success",
-    pending: "warning",
-    rescheduled: "neutral",
-  };
-
-export function CallCard({ call, href, compact }: CallCardProps) {
+export function CallCard({ call, href }: CallCardProps) {
   // Determine visual styling based on call data
   const hasHandoff = call.requiresHandoff;
   const hasAppointment = call.tags.includes("appointment");
@@ -47,8 +35,7 @@ export function CallCard({ call, href, compact }: CallCardProps) {
   const content = (
     <Card
       className={cn(
-        "group relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg border-l-4",
-        compact ? "border-dashed" : "border",
+        "group relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg border-l-4 border",
         borderAccent
       )}
     >
@@ -66,7 +53,7 @@ export function CallCard({ call, href, compact }: CallCardProps) {
                   {tag}
                 </Badge>
               ))}
-              {call.requiresHandoff ? (
+              {call.requiresHandoff && !call.tags.includes("handoff") ? (
                 <Badge variant="warning">Needs callback</Badge>
               ) : null}
             </div>

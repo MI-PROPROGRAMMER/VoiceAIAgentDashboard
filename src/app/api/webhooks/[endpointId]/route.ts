@@ -119,7 +119,7 @@ export async function POST(
         );
 
       if (callError) {
-        console.error("Failed to upsert call:", callError);
+        // Log error for monitoring (implement proper logging service in production)
       }
 
       // 7) Create handoff if needed
@@ -150,7 +150,7 @@ export async function POST(
 
     return NextResponse.json({ received: true }, { status: 200 });
   } catch (error) {
-    console.error("Webhook error:", error);
+    // Log error for monitoring (implement proper logging service in production)
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

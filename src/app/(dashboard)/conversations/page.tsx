@@ -34,7 +34,7 @@ export default function ConversationsPage() {
     return groupByDate(filtered);
   }, [filtered]);
 
-  const handleExport = (format: "json" | "csv") => {
+  const handleExport = () => {
     // Prepare data for export (only visible fields on the page)
     const exportData = filtered.map((call) => ({
       id: call.id,
@@ -49,59 +49,46 @@ export default function ConversationsPage() {
       sentiment: call.sentiment || "N/A",
     }));
 
-    if (format === "json") {
-      const jsonString = JSON.stringify(exportData, null, 2);
-      const blob = new Blob([jsonString], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `conversations-${new Date().toISOString().split("T")[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } else if (format === "csv") {
-      // Convert to CSV
-      const headers = [
-        "ID",
-        "Phone",
-        "Customer Name",
-        "Agent Name",
-        "Tags",
-        "Date/Time",
-        "Duration (minutes)",
-        "Summary",
-        "Requires Handoff",
-        "Sentiment",
-      ];
-      const csvRows = [
-        headers.join(","),
-        ...exportData.map((row) =>
-          [
-            row.id,
-            `"${row.phone.replace(/"/g, '""')}"`,
-            `"${(row.customerName || "").replace(/"/g, '""')}"`,
-            `"${row.agentName.replace(/"/g, '""')}"`,
-            `"${row.tags.replace(/"/g, '""')}"`,
-            row.datetime,
-            row.durationMinutes,
-            `"${row.summary.replace(/"/g, '""')}"`,
-            row.requiresHandoff,
-            row.sentiment,
-          ].join(",")
-        ),
-      ];
-      const csvString = csvRows.join("\n");
-      const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `conversations-${new Date().toISOString().split("T")[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
+    // Convert to CSV
+    const headers = [
+      "ID",
+      "Phone",
+      "Customer Name",
+      "Agent Name",
+      "Tags",
+      "Date/Time",
+      "Duration (minutes)",
+      "Summary",
+      "Requires Handoff",
+      "Sentiment",
+    ];
+    const csvRows = [
+      headers.join(","),
+      ...exportData.map((row) =>
+        [
+          row.id,
+          `"${row.phone.replace(/"/g, '""')}"`,
+          `"${(row.customerName || "").replace(/"/g, '""')}"`,
+          `"${row.agentName.replace(/"/g, '""')}"`,
+          `"${row.tags.replace(/"/g, '""')}"`,
+          row.datetime,
+          row.durationMinutes,
+          `"${row.summary.replace(/"/g, '""')}"`,
+          row.requiresHandoff,
+          row.sentiment,
+        ].join(",")
+      ),
+    ];
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `conversations-${new Date().toISOString().split("T")[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -118,10 +105,7 @@ export default function ConversationsPage() {
             variant="outline"
             size="sm"
             className="gap-2"
-            onClick={() => {
-              // Show a simple menu or directly export CSV (most common)
-              handleExport("csv");
-            }}
+            onClick={handleExport}
           >
             <i className="lni lni-download" aria-hidden />
             Export

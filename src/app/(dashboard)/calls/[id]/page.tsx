@@ -13,19 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { calls } from "@/lib/mock-data";
+import { tagVariantMap } from "@/lib/tag-variants";
 import { formatDateTime } from "@/lib/utils";
-
-const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
-  {
-    appointment: "success",
-    "call completed": "neutral",
-    general: "neutral",
-    handoff: "warning",
-    "call incomplete": "destructive",
-    confirmed: "success",
-    pending: "warning",
-    rescheduled: "neutral",
-  };
 
 export default function CallDetailPage({
   params,
@@ -50,8 +39,8 @@ export default function CallDetailPage({
     // Auto-play when player is shown
     setTimeout(() => {
       if (audioRef.current) {
-        audioRef.current.play().catch((error) => {
-          console.error("Error playing audio:", error);
+        audioRef.current.play().catch(() => {
+          // Audio playback failed - user interaction may be required
         });
       }
     }, 100);
@@ -88,7 +77,7 @@ export default function CallDetailPage({
                   {tag}
                 </Badge>
               ))}
-              {call.requiresHandoff ? (
+              {call.requiresHandoff && !call.tags.includes("handoff") ? (
                 <Badge variant="warning">Needs callback</Badge>
               ) : null}
             </div>

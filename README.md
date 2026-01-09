@@ -20,6 +20,32 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Tag System
+
+The conversation system uses a structured tag system with three categories:
+
+### Category 1: Call Type (One Required)
+- **appointment** - Call was about booking an appointment
+- **handoff** - Call needs human callback/follow-up
+- **general** - General inquiry call
+
+### Category 2: Completion Status (One Required)
+- **call completed** - Call finished successfully
+- **call incomplete** - Call not finished
+
+### Category 3: Appointment Status (Only if Category 1 = "appointment")
+- **confirmed** - Appointment confirmed
+- **pending** - Awaiting confirmation
+- **rescheduled** - Appointment was rescheduled
+
+### Tag Structure Examples
+- `["appointment", "call completed", "confirmed"]` - Appointment call that finished and was confirmed
+- `["appointment", "call completed", "pending"]` - Appointment call that finished but awaiting confirmation
+- `["handoff", "call incomplete"]` - Handoff call that didn't finish
+- `["general", "call completed"]` - General query call that finished
+
+Every call must have exactly one tag from Category 1 and one tag from Category 2. If Category 1 is "appointment", then one tag from Category 3 must also be included.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

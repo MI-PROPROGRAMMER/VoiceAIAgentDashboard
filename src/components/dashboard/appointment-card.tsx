@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Appointment, Call } from "@/lib/mock-data";
 import { calls } from "@/lib/mock-data";
+import { tagVariantMap } from "@/lib/tag-variants";
 import { cn, formatDateTime } from "@/lib/utils";
 
 type AppointmentCardProps = {
@@ -18,18 +19,6 @@ const statusVariant: Record<Appointment["status"], "success" | "warning" | "neut
   pending: "warning",
   rescheduled: "neutral",
 };
-
-const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
-  {
-    appointment: "success",
-    "call completed": "neutral",
-    general: "neutral",
-    handoff: "warning",
-    "call incomplete": "destructive",
-    confirmed: "success",
-    pending: "warning",
-    rescheduled: "neutral",
-  };
 
 export function AppointmentCard({ appointment, href }: AppointmentCardProps) {
   // Get the related call to show tags and other info
@@ -91,7 +80,7 @@ export function AppointmentCard({ appointment, href }: AppointmentCardProps) {
               <Badge variant={statusVariant[appointment.status]}>
                 {appointment.status}
               </Badge>
-              {relatedCall?.requiresHandoff && (
+              {relatedCall?.requiresHandoff && !relatedCall.tags.includes("handoff") && (
                 <Badge variant="warning">Needs callback</Badge>
               )}
             </div>

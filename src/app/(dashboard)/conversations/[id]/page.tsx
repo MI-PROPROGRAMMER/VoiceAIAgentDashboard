@@ -13,19 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { calls } from "@/lib/mock-data";
+import { tagVariantMap } from "@/lib/tag-variants";
 import { formatDateTime } from "@/lib/utils";
-
-const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
-  {
-    appointment: "success",
-    "call completed": "neutral",
-    general: "neutral",
-    handoff: "warning",
-    "call incomplete": "destructive",
-    confirmed: "success",
-    pending: "warning",
-    rescheduled: "neutral",
-  };
 
 export default function ConversationDetailPage({
   params,
@@ -49,8 +38,8 @@ export default function ConversationDetailPage({
     // Auto-play when player is shown
     setTimeout(() => {
       if (audioRef.current) {
-        audioRef.current.play().catch((error) => {
-          console.error("Error playing audio:", error);
+        audioRef.current.play().catch(() => {
+          // Audio playback failed - user interaction may be required
         });
       }
     }, 100);
@@ -83,7 +72,7 @@ export default function ConversationDetailPage({
                 {tag}
               </Badge>
             ))}
-            {call.requiresHandoff ? (
+            {call.requiresHandoff && !call.tags.includes("handoff") ? (
               <Badge variant="warning">Needs callback</Badge>
             ) : null}
           </div>
@@ -108,10 +97,6 @@ export default function ConversationDetailPage({
           >
             <i className="lni lni-download" aria-hidden />
             Download
-          </Button>
-          <Button size="sm" className="gap-2">
-            <i className="lni lni-share" aria-hidden />
-            Share
           </Button>
         </div>
       </div>

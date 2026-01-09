@@ -22,12 +22,16 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardPage() {
-  // Calculate dynamic stats from actual data
-  const totalAppointments = appointments.length;
+  // Calculate dynamic stats from call tags
   const totalCalls = calls.length;
-  const handoffs = calls.filter((call) => call.requiresHandoff).length;
+  const completedCalls = calls.filter((call) => call.tags.includes("call completed")).length;
+  const incompleteCalls = calls.filter((call) => call.tags.includes("call incomplete")).length;
+  const appointmentCalls = calls.filter((call) => call.tags.includes("appointment")).length;
+  const handoffCalls = calls.filter((call) => call.tags.includes("handoff")).length;
+  const generalQueryCalls = calls.filter((call) => call.tags.includes("general")).length;
+  
   const conversionRate = totalCalls > 0 
-    ? ((appointments.length / totalCalls) * 100).toFixed(1)
+    ? ((appointmentCalls / totalCalls) * 100).toFixed(1)
     : "0.0";
   
   // Calculate today's schedules (appointments for today)
@@ -45,12 +49,15 @@ export default function DashboardPage() {
     : "0m 0s";
   
   // Count booking-ready calls (calls with appointment tag)
-  const bookingReadyCalls = calls.filter((call) => call.tags.includes("appointment")).length;
-  const convertedCalls = appointments.length;
+  const bookingReadyCalls = appointmentCalls;
+  const convertedCalls = appointmentCalls;
   
   const recentCalls = calls.slice(0, 4);
-  const handoffCalls = calls.filter((call) => call.requiresHandoff).slice(0, 3);
-  const upcomingAppointments = appointments.slice(0, 3);
+  const handoffCallsList = calls.filter((call) => call.tags.includes("handoff")).slice(0, 3);
+  const upcomingAppointments = appointments.filter((apt) => {
+    const relatedCall = calls.find((call) => call.id === apt.callId);
+    return relatedCall?.tags.includes("appointment");
+  }).slice(0, 3);
   const conversionTrend = [22, 28, 26, 32, 35, 36, 38, 40];
 
   return (
@@ -64,29 +71,30 @@ export default function DashboardPage() {
 
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
+          title="Total calls"
+          value={totalCalls.toString()}
+          helper={`${completedCalls} completed, ${incompleteCalls} incomplete`}
+          icon="headphone"
+          href="/conversations"
+        />
+        <StatCard
           title="Appointments"
-          value={totalAppointments.toString()}
-          helper="Booked through the AI agent"
+          value={appointmentCalls.toString()}
+          helper={`${conversionRate}% conversion rate`}
           icon="calendar"
           href="/appointments"
         />
         <StatCard
-          title="Conversion rate"
-          value={`${conversionRate}%`}
-          helper="Call → booking conversion"
-          icon="pulse"
-        />
-        <StatCard
-          title="Total calls"
-          value={totalCalls.toString()}
-          helper="All time"
+          title="General queries"
+          value={generalQueryCalls.toString()}
+          helper="General inquiry calls"
           icon="headphone"
           href="/conversations"
         />
         <StatCard
           title="Handoffs"
-          value={handoffs.toString()}
-          helper="Needing callbacks"
+          value={handoffCalls.toString()}
+          helper="Calls needing callbacks"
           icon="flag"
           accent="warning"
           href="/need-attention"
@@ -173,7 +181,7 @@ export default function DashboardPage() {
             </Link>
           </CardHeader>
           <CardContent className="space-y-2.5 max-h-80 overflow-y-auto pr-2">
-            {handoffCalls.map((call) => (
+            {handoffCallsList.map((call) => (
               <div
                 key={call.id}
                 className="w-full rounded-lg border border-dashed border-amber-200 bg-amber-50 px-2.5 py-2 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-1.5"
@@ -184,7 +192,9 @@ export default function DashboardPage() {
                       ? `${call.phone} (${call.customerName})`
                       : call.phone}
                   </p>
-                  <Badge variant="warning" className="text-xs shrink-0">Needs callback</Badge>
+                  {!call.tags.includes("handoff") && (
+                    <Badge variant="warning" className="text-xs shrink-0">Needs callback</Badge>
+                  )}
                 </div>
                 <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
                   {call.summary}
@@ -259,7 +269,7 @@ export default function DashboardPage() {
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
               <p className="text-sm font-semibold mb-2">Callbacks required</p>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                {handoffs} calls need human follow-up to close.
+                {handoffCalls} calls need human follow-up to close.
               </p>
             </div>
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">

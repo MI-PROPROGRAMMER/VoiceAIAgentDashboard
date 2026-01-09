@@ -36,14 +36,6 @@ export type Appointment = {
   service: string;
 };
 
-export const stats = {
-  totalAppointments: 42,
-  conversionRate: 36.5,
-  totalCalls: 128,
-  handoffs: 6,
-  todaysSchedules: 5,
-};
-
 export const calls: Call[] = [
   {
     id: "CALL-1045",

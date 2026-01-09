@@ -19,7 +19,6 @@ import {
   Linkedin,
   Github,
   Facebook,
-  Instagram,
   HelpCircle,
   FileText,
   BookOpen,

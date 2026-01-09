@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { AppointmentCard } from "@/components/dashboard/appointment-card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { appointments } from "@/lib/mock-data";
+import { appointments, calls } from "@/lib/mock-data";
 import { groupAppointmentsByDate } from "@/lib/utils";
 
 const STATUS = ["all", "confirmed", "pending", "rescheduled"] as const;
@@ -17,6 +17,10 @@ export default function AppointmentsPage() {
   const filtered = useMemo(
     () => {
       const filteredAppointments = appointments.filter((item) => {
+        // Only show appointments where the related call has "appointment" in its tags
+        const relatedCall = calls.find((call) => call.id === item.callId);
+        if (!relatedCall?.tags.includes("appointment")) return false;
+        
         const matchesStatus = status === "all" || item.status === status;
         const matchesQuery =
           query.length === 0 ||
