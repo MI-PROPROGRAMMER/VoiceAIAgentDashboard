@@ -18,10 +18,13 @@ import { formatDateTime } from "@/lib/utils";
 const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
   {
     appointment: "success",
-    completed: "neutral",
+    "call completed": "neutral",
     general: "neutral",
     handoff: "warning",
-    incomplete: "destructive",
+    "call incomplete": "destructive",
+    confirmed: "success",
+    pending: "warning",
+    rescheduled: "neutral",
   };
 
 export default function CallDetailPage({

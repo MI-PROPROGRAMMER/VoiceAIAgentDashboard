@@ -15,6 +15,18 @@ import {
 import { calls } from "@/lib/mock-data";
 import { formatDateTime } from "@/lib/utils";
 
+const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
+  {
+    appointment: "success",
+    "call completed": "neutral",
+    general: "neutral",
+    handoff: "warning",
+    "call incomplete": "destructive",
+    confirmed: "success",
+    pending: "warning",
+    rescheduled: "neutral",
+  };
+
 export default function ConversationDetailPage({
   params,
 }: {
@@ -67,7 +79,9 @@ export default function ConversationDetailPage({
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {call.tags.map((tag) => (
-              <Badge key={tag}>{tag}</Badge>
+              <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>
+                {tag}
+              </Badge>
             ))}
             {call.requiresHandoff ? (
               <Badge variant="warning">Needs callback</Badge>

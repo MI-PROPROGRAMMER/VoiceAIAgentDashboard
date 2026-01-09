@@ -7,15 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { calls } from "@/lib/mock-data";
+import { groupByDate } from "@/lib/utils";
 
-const TAGS = ["all", "appointment", "handoff", "general", "completed", "incomplete"];
+const TAGS = ["all", "appointment", "handoff", "general", "call completed", "call incomplete"];
 
 export default function ConversationsPage() {
   const [tag, setTag] = useState<string>("all");
   const [query, setQuery] = useState<string>("");
 
   const filtered = useMemo(() => {
-    return calls.filter((call) => {
+    const filteredCalls = calls.filter((call) => {
       const matchesTag = tag === "all" || call.tags.includes(tag as any);
       const matchesQuery =
         query.length === 0 ||
@@ -24,7 +25,14 @@ export default function ConversationsPage() {
         (call.customerName && call.customerName.toLowerCase().includes(query.toLowerCase()));
       return matchesTag && matchesQuery;
     });
+    
+    // Sort by datetime (newest first)
+    return filteredCalls.sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime());
   }, [query, tag]);
+
+  const groupedCalls = useMemo(() => {
+    return groupByDate(filtered);
+  }, [filtered]);
 
   const handleExport = (format: "json" | "csv") => {
     // Prepare data for export (only visible fields on the page)
@@ -144,11 +152,23 @@ export default function ConversationsPage() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        {filtered.map((call) => (
-          <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
-        ))}
-        {filtered.length === 0 && (
+      <div className="space-y-6">
+        {groupedCalls.length > 0 ? (
+          groupedCalls.map((group) => (
+            <div key={group.dateKey} className="space-y-4">
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2 border-b border-border/50">
+                <h2 className="text-sm font-semibold text-muted-foreground">
+                  {group.dateLabel}
+                </h2>
+              </div>
+              <div className="space-y-4">
+                {group.items.map((call) => (
+                  <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
           <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">
             No calls match that filter yet.
           </div>

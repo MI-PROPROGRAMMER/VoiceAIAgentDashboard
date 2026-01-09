@@ -19,10 +19,35 @@ import {
   calls,
   recentBookings,
   schedules,
-  stats,
 } from "@/lib/mock-data";
 
 export default function DashboardPage() {
+  // Calculate dynamic stats from actual data
+  const totalAppointments = appointments.length;
+  const totalCalls = calls.length;
+  const handoffs = calls.filter((call) => call.requiresHandoff).length;
+  const conversionRate = totalCalls > 0 
+    ? ((appointments.length / totalCalls) * 100).toFixed(1)
+    : "0.0";
+  
+  // Calculate today's schedules (appointments for today)
+  const today = new Date().toISOString().split("T")[0];
+  const todaysSchedules = appointments.filter((apt) => apt.date === today).length;
+  
+  // Calculate average handling time
+  const avgDurationMinutes = calls.length > 0
+    ? calls.reduce((sum, call) => sum + call.durationMinutes, 0) / calls.length
+    : 0;
+  const avgMinutes = Math.floor(avgDurationMinutes);
+  const avgSeconds = Math.round((avgDurationMinutes - avgMinutes) * 60);
+  const avgHandlingTime = calls.length > 0 
+    ? `${avgMinutes}m ${avgSeconds}s`
+    : "0m 0s";
+  
+  // Count booking-ready calls (calls with appointment tag)
+  const bookingReadyCalls = calls.filter((call) => call.tags.includes("appointment")).length;
+  const convertedCalls = appointments.length;
+  
   const recentCalls = calls.slice(0, 4);
   const handoffCalls = calls.filter((call) => call.requiresHandoff).slice(0, 3);
   const upcomingAppointments = appointments.slice(0, 3);
@@ -40,27 +65,27 @@ export default function DashboardPage() {
       <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           title="Appointments"
-          value={stats.totalAppointments.toString()}
+          value={totalAppointments.toString()}
           helper="Booked through the AI agent"
           icon="calendar"
           href="/appointments"
         />
         <StatCard
           title="Conversion rate"
-          value={`${stats.conversionRate}%`}
+          value={`${conversionRate}%`}
           helper="Call → booking conversion"
           icon="pulse"
         />
         <StatCard
           title="Total calls"
-          value={stats.totalCalls.toString()}
-          helper="Last 30 days"
+          value={totalCalls.toString()}
+          helper="All time"
           icon="headphone"
           href="/conversations"
         />
         <StatCard
           title="Handoffs"
-          value={stats.handoffs.toString()}
+          value={handoffs.toString()}
           helper="Needing callbacks"
           icon="flag"
           accent="warning"
@@ -213,8 +238,8 @@ export default function DashboardPage() {
         <CardContent className="space-y-6">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-6">
             <div>
-              <p className="text-sm text-muted-foreground">This week</p>
-              <p className="text-3xl font-semibold">{stats.conversionRate}%</p>
+              <p className="text-sm text-muted-foreground">Overall</p>
+              <p className="text-3xl font-semibold">{conversionRate}%</p>
             </div>
             <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-400">
               <i className="lni lni-trending-up" aria-hidden />
@@ -228,18 +253,18 @@ export default function DashboardPage() {
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
               <p className="text-sm font-semibold mb-2">Booking-ready calls</p>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                54 calls contained booking intent; 18 converted.
+                {bookingReadyCalls} calls contained booking intent; {convertedCalls} converted.
               </p>
             </div>
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
               <p className="text-sm font-semibold mb-2">Callbacks required</p>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                {stats.handoffs} calls need human follow-up to close.
+                {handoffs} calls need human follow-up to close.
               </p>
             </div>
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
               <p className="text-sm font-semibold mb-2">Avg. handling time</p>
-              <p className="text-xs leading-relaxed text-muted-foreground">9m 30s per call</p>
+              <p className="text-xs leading-relaxed text-muted-foreground">{avgHandlingTime} per call</p>
             </div>
           </div>
         </CardContent>

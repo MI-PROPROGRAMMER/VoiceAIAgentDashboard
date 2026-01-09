@@ -16,18 +16,40 @@ type CallCardProps = {
 const tagVariantMap: Record<string, "default" | "neutral" | "warning" | "destructive" | "success"> =
   {
     appointment: "success",
-    completed: "neutral",
+    "call completed": "neutral",
     general: "neutral",
     handoff: "warning",
-    incomplete: "destructive",
+    "call incomplete": "destructive",
+    confirmed: "success",
+    pending: "warning",
+    rescheduled: "neutral",
   };
 
 export function CallCard({ call, href, compact }: CallCardProps) {
+  // Determine visual styling based on call data
+  const hasHandoff = call.requiresHandoff;
+  const hasAppointment = call.tags.includes("appointment");
+  const isCallIncomplete = call.tags.includes("call incomplete");
+  const sentimentColor = call.sentiment === "Positive" 
+    ? "border-l-emerald-500" 
+    : call.sentiment === "Negative" 
+    ? "border-l-destructive" 
+    : "border-l-blue";
+  
+  const borderAccent = hasHandoff 
+    ? "border-l-amber-500" 
+    : hasAppointment 
+    ? "border-l-emerald-500" 
+    : isCallIncomplete 
+    ? "border-l-destructive" 
+    : sentimentColor;
+
   const content = (
     <Card
       className={cn(
-        "group relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg",
-        compact ? "border-dashed" : "border"
+        "group relative overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg border-l-4",
+        compact ? "border-dashed" : "border",
+        borderAccent
       )}
     >
       <CardContent className="p-6 flex flex-col">
@@ -39,7 +61,6 @@ export function CallCard({ call, href, compact }: CallCardProps) {
                   ? `${call.phone} (${call.customerName})`
                   : call.phone}
               </p>
-              <Badge variant="neutral">{call.agentName}</Badge>
               {call.tags.map((tag) => (
                 <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>
                   {tag}

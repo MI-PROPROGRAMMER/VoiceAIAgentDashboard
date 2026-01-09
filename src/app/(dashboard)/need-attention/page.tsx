@@ -6,22 +6,30 @@ import { CallCard } from "@/components/dashboard/call-card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { calls } from "@/lib/mock-data";
+import { groupByDate } from "@/lib/utils";
 
 export default function NeedAttentionPage() {
   const [query, setQuery] = useState("");
 
   const handoffs = useMemo(
-    () =>
-      calls.filter(
+    () => {
+      const filtered = calls.filter(
         (call) =>
           call.requiresHandoff &&
           (query.length === 0 ||
             call.phone.toLowerCase().includes(query.toLowerCase()) ||
             (call.customerName && call.customerName.toLowerCase().includes(query.toLowerCase())) ||
             call.summary.toLowerCase().includes(query.toLowerCase()))
-      ),
+      );
+      // Sort by datetime (newest first)
+      return filtered.sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime());
+    },
     [query]
   );
+
+  const groupedHandoffs = useMemo(() => {
+    return groupByDate(handoffs);
+  }, [handoffs]);
 
   return (
     <div className="space-y-8">
@@ -49,11 +57,23 @@ export default function NeedAttentionPage() {
         </div>
       </div>
 
-      <div className="space-y-4">
-        {handoffs.map((call) => (
-          <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
-        ))}
-        {handoffs.length === 0 && (
+      <div className="space-y-6">
+        {groupedHandoffs.length > 0 ? (
+          groupedHandoffs.map((group) => (
+            <div key={group.dateKey} className="space-y-4">
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-2 border-b border-border/50">
+                <h2 className="text-sm font-semibold text-muted-foreground">
+                  {group.dateLabel}
+                </h2>
+              </div>
+              <div className="space-y-4">
+                {group.items.map((call) => (
+                  <CallCard key={call.id} call={call} href={`/calls/${call.id}`} />
+                ))}
+              </div>
+            </div>
+          ))
+        ) : (
           <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">
             All handoffs are cleared. Great work!
           </div>
