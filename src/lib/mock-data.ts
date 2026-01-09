@@ -7,7 +7,8 @@ export type CallTag =
 
 export type Call = {
   id: string;
-  customerName: string;
+  customerName?: string;
+  phone: string;
   agentName: string;
   tags: CallTag[];
   datetime: string;
@@ -44,6 +45,7 @@ export const calls: Call[] = [
   {
     id: "CALL-1045",
     customerName: "Jordan Lee",
+    phone: "+1 (415) 555-0199",
     agentName: "Ava (AI)",
     tags: ["appointment", "completed"],
     datetime: "2026-01-08T09:30:00Z",
@@ -67,6 +69,7 @@ export const calls: Call[] = [
   {
     id: "CALL-1044",
     customerName: "Priya Raman",
+    phone: "+1 (917) 555-0114",
     agentName: "Nova (AI)",
     tags: ["handoff", "incomplete"],
     datetime: "2026-01-08T12:10:00Z",
@@ -91,6 +94,7 @@ export const calls: Call[] = [
   {
     id: "CALL-1043",
     customerName: "Miguel Santos",
+    phone: "+1 (303) 555-0172",
     agentName: "Ava (AI)",
     tags: ["general", "completed"],
     datetime: "2026-01-07T17:45:00Z",
@@ -114,6 +118,7 @@ export const calls: Call[] = [
   {
     id: "CALL-1042",
     customerName: "Kim Reynolds",
+    phone: "+1 (206) 555-0142",
     agentName: "Nova (AI)",
     tags: ["appointment", "completed"],
     datetime: "2026-01-07T15:15:00Z",
@@ -136,7 +141,7 @@ export const calls: Call[] = [
   },
   {
     id: "CALL-1041",
-    customerName: "Casey Morgan",
+    phone: "+92 222 333434",
     agentName: "Ava (AI)",
     tags: ["handoff", "incomplete"],
     datetime: "2026-01-07T11:05:00Z",
@@ -161,6 +166,7 @@ export const calls: Call[] = [
   {
     id: "CALL-1040",
     customerName: "Taylor Brooks",
+    phone: "+1 (650) 555-0123",
     agentName: "Nova (AI)",
     tags: ["general", "completed"],
     datetime: "2026-01-06T10:25:00Z",

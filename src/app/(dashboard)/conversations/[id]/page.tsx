@@ -57,7 +57,11 @@ export default function ConversationDetailPage({
           <Link href="/conversations" className="text-xs text-blue hover:underline">
             ← Back to conversations
           </Link>
-          <h1 className="mt-1 text-xl font-semibold tracking-tight">{call.customerName}</h1>
+          <h1 className="mt-1 text-xl font-semibold tracking-tight">
+            {call.customerName
+              ? `${call.phone} (${call.customerName})`
+              : call.phone}
+          </h1>
           <p className="text-sm text-muted-foreground">
             {formatDateTime(call.datetime)} · {call.durationMinutes}m · {call.agentName}
           </p>

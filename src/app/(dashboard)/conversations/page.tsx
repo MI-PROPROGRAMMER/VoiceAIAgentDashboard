@@ -20,7 +20,8 @@ export default function ConversationsPage() {
       const matchesQuery =
         query.length === 0 ||
         call.summary.toLowerCase().includes(query.toLowerCase()) ||
-        call.customerName.toLowerCase().includes(query.toLowerCase());
+        call.phone.toLowerCase().includes(query.toLowerCase()) ||
+        (call.customerName && call.customerName.toLowerCase().includes(query.toLowerCase()));
       return matchesTag && matchesQuery;
     });
   }, [query, tag]);
@@ -29,7 +30,8 @@ export default function ConversationsPage() {
     // Prepare data for export (only visible fields on the page)
     const exportData = filtered.map((call) => ({
       id: call.id,
-      customerName: call.customerName,
+      phone: call.phone,
+      customerName: call.customerName || "",
       agentName: call.agentName,
       tags: call.tags.join(", "),
       datetime: call.datetime,
@@ -54,6 +56,7 @@ export default function ConversationsPage() {
       // Convert to CSV
       const headers = [
         "ID",
+        "Phone",
         "Customer Name",
         "Agent Name",
         "Tags",
@@ -68,7 +71,8 @@ export default function ConversationsPage() {
         ...exportData.map((row) =>
           [
             row.id,
-            `"${row.customerName.replace(/"/g, '""')}"`,
+            `"${row.phone.replace(/"/g, '""')}"`,
+            `"${(row.customerName || "").replace(/"/g, '""')}"`,
             `"${row.agentName.replace(/"/g, '""')}"`,
             `"${row.tags.replace(/"/g, '""')}"`,
             row.datetime,

@@ -74,7 +74,11 @@ export default function CallDetailPage({
             ← Back to calls
           </Link>
           <div className="mt-2 flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl font-semibold tracking-tight">{call.customerName}</h1>
+            <h1 className="text-xl font-semibold tracking-tight">
+              {call.customerName
+                ? `${call.phone} (${call.customerName})`
+                : call.phone}
+            </h1>
             <div className="flex flex-wrap items-center gap-2">
               {call.tags.map((tag) => (
                 <Badge key={tag} variant={tagVariantMap[tag] ?? "default"}>

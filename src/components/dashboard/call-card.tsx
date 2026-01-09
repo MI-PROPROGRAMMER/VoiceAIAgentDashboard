@@ -35,7 +35,9 @@ export function CallCard({ call, href, compact }: CallCardProps) {
           <div className="flex-1 space-y-4">
             <div className="flex flex-wrap items-center gap-3">
               <p className="text-base font-semibold text-foreground">
-                {call.customerName}
+                {call.customerName
+                  ? `${call.phone} (${call.customerName})`
+                  : call.phone}
               </p>
               <Badge variant="neutral">{call.agentName}</Badge>
               {call.tags.map((tag) => (

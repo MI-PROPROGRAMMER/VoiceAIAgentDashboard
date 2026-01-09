@@ -16,7 +16,8 @@ export default function NeedAttentionPage() {
         (call) =>
           call.requiresHandoff &&
           (query.length === 0 ||
-            call.customerName.toLowerCase().includes(query.toLowerCase()) ||
+            call.phone.toLowerCase().includes(query.toLowerCase()) ||
+            (call.customerName && call.customerName.toLowerCase().includes(query.toLowerCase())) ||
             call.summary.toLowerCase().includes(query.toLowerCase()))
       ),
     [query]

@@ -154,7 +154,11 @@ export default function DashboardPage() {
                 className="w-full rounded-lg border border-dashed border-amber-200 bg-amber-50 px-2.5 py-2 dark:border-amber-900/50 dark:bg-amber-950/30 space-y-1.5"
               >
                 <div className="flex items-center justify-between gap-2 min-w-0">
-                  <p className="text-xs font-semibold line-clamp-1 min-w-0 flex-1">{call.customerName}</p>
+                  <p className="text-xs font-semibold line-clamp-1 min-w-0 flex-1">
+                    {call.customerName
+                      ? `${call.phone} (${call.customerName})`
+                      : call.phone}
+                  </p>
                   <Badge variant="warning" className="text-xs shrink-0">Needs callback</Badge>
                 </div>
                 <p className="text-xs leading-relaxed text-muted-foreground line-clamp-2">
