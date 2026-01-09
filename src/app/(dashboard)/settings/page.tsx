@@ -138,8 +138,8 @@ export default async function SettingsPage() {
             <Button variant="outline" className="w-full">
               Change password
             </Button>
-            <form action="/logout" method="get">
-              <Button variant="ghost" className="w-full text-destructive">
+            <form action="/logout" method="post">
+              <Button type="submit" variant="ghost" className="w-full text-destructive">
                 Sign out
               </Button>
             </form>

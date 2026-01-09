@@ -6,6 +6,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { PasswordInput } from "@/components/auth/password-input";
 
 async function signInAction(formData: FormData) {
   "use server";
@@ -113,13 +114,11 @@ export default async function LoginPage({
                     <Lock className="h-4 w-4 text-muted-foreground" />
                     Password
                   </label>
-                  <Input
+                  <PasswordInput
                     id="password"
                     name="password"
-                    type="password"
                     required
                     placeholder="Enter your password"
-                    className="h-11"
                     autoComplete="current-password"
                   />
                 </div>

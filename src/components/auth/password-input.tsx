@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input";
 interface PasswordInputProps {
   id: string;
   name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;
   minLength?: number;
   autoComplete?: string;
+  className?: string;
+  defaultValue?: string;
 }
 
 export function PasswordInput({
@@ -24,6 +26,8 @@ export function PasswordInput({
   required,
   minLength,
   autoComplete,
+  className = "h-11 pr-10",
+  defaultValue,
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -36,9 +40,10 @@ export function PasswordInput({
         required={required}
         minLength={minLength}
         placeholder={placeholder}
-        className="h-11 pr-10"
+        className={className}
         autoComplete={autoComplete}
         value={value}
+        defaultValue={defaultValue}
         onChange={onChange}
       />
       <button
