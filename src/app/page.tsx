@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   Users,
   Award,
-  Sparkles,
   Mail,
   Twitter,
   Linkedin,

@@ -34,10 +34,6 @@ export default function DashboardPage() {
     ? ((appointmentCalls / totalCalls) * 100).toFixed(1)
     : "0.0";
   
-  // Calculate today's schedules (appointments for today)
-  const today = new Date().toISOString().split("T")[0];
-  const todaysSchedules = appointments.filter((apt) => apt.date === today).length;
-  
   // Calculate average handling time
   const avgDurationMinutes = calls.length > 0
     ? calls.reduce((sum, call) => sum + call.durationMinutes, 0) / calls.length
@@ -49,7 +45,6 @@ export default function DashboardPage() {
     : "0m 0s";
   
   // Count booking-ready calls (calls with appointment tag)
-  const bookingReadyCalls = appointmentCalls;
   const convertedCalls = appointmentCalls;
   
   const recentCalls = calls.slice(0, 4);
@@ -263,7 +258,7 @@ export default function DashboardPage() {
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
               <p className="text-sm font-semibold mb-2">Booking-ready calls</p>
               <p className="text-xs leading-relaxed text-muted-foreground">
-                {bookingReadyCalls} calls contained booking intent; {convertedCalls} converted.
+                {convertedCalls} calls contained booking intent and converted.
               </p>
             </div>
             <div className="rounded-lg border border-border/70 bg-muted/40 p-4">
