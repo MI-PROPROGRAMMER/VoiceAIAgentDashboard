@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { useState, use } from "react";
+import { useState, use, useRef } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,8 @@ export default function CallDetailPage({
 }) {
   const { id } = use(params);
   const [copied, setCopied] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const call = calls.find((item) => item.id === id);
 
@@ -38,8 +40,22 @@ export default function CallDetailPage({
     notFound();
   }
 
+  const hasRecording = call.recordingUrl && call.recordingUrl !== "#";
+
+  const handlePlayRecording = () => {
+    setShowPlayer(true);
+    // Auto-play when player is shown
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      }
+    }, 100);
+  };
+
   const handleDownloadRecording = () => {
-    if (call.recordingUrl && call.recordingUrl !== "#") {
+    if (hasRecording) {
       window.open(call.recordingUrl, "_blank");
     }
   };
@@ -79,14 +95,40 @@ export default function CallDetailPage({
             variant="outline"
             size="sm"
             className="gap-2"
+            onClick={handlePlayRecording}
+            disabled={!hasRecording}
+          >
+            <i className="lni lni-headphone-alt" aria-hidden />
+            Play recording
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
             onClick={handleDownloadRecording}
-            disabled={!call.recordingUrl || call.recordingUrl === "#"}
+            disabled={!hasRecording}
           >
             <i className="lni lni-download" aria-hidden />
-            Download recording
+            Download
           </Button>
         </div>
       </div>
+
+      {showPlayer && hasRecording && (
+        <Card>
+          <CardHeader className="pb-4">
+            <CardTitle className="text-base font-semibold">Recording</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <audio
+              ref={audioRef}
+              src={call.recordingUrl}
+              controls
+              className="w-full"
+            />
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader className="pb-4">
@@ -161,7 +203,7 @@ export default function CallDetailPage({
             <div className="flex items-center justify-between rounded-lg border border-border/70 bg-muted/30 px-3 py-2">
               <span>Recording</span>
               <span className="font-semibold text-foreground">
-                {call.recordingUrl && call.recordingUrl !== "#" ? "Available" : "Pending"}
+                {hasRecording ? "Available" : "Pending"}
               </span>
             </div>
             {call.requiresHandoff ? (
